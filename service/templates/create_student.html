@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #f6d365, #fda085);
+            color: #333;
+        }
+
+        .container {
+            border: 2px solid #f6d365;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #f6d365;
+            border-color: #f6d365;
+        }
+
+        .btn-primary:hover {
+            background-color: #f6d365;
+            border-color: #f6d365;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Create Student</h1>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="major">Major:</label>
+                <input type="text" class="form-control" id="major" name="major" required>
+            </div>
+
+            <div class="form-group">
+                <label for="budget">Budget:</label>
+                <input type="text" class="form-control" id="budget" name="budget" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Student</
