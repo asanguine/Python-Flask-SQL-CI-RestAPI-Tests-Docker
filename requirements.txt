@@ -2,6 +2,11 @@
 Flask
 Flask-SQLAlchemy
 requests
+flask-migrate
+
+# pymysql
+# connector
+# connector-python
 
 #testing dependencies
 nose
