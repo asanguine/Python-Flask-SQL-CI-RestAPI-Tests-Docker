@@ -4,11 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 from service import db
 
 logger = logging.getLogger()
-#db = SQLAlchemy()
-
 
 class DataValidationError(Exception):
     """Used for an data validation errors when deserializing"""
+
+
+
 
 
 ############################################################
@@ -25,7 +26,6 @@ class Student(db.Model):
     status = db.Column(db.String(100))
     assigned_university = db.Column(db.String(100))
 
-    universities = db.relationship('University', secondary='student_university', back_populates='students')
 
 
     def __repr__(self):
@@ -67,8 +67,16 @@ class StudyArea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
 
-    universities = db.relationship('University', secondary='university_study_area', back_populates='study_areas')
-
+def create_predefined_study_areas():
+    predefined_study_areas = [
+        StudyArea(name='Computer Science'),
+        StudyArea(name='Mechanical Engineering'),
+        StudyArea(name='Electrical Engineering'),
+    ]
+    # Add the predefined study areas to the database session and commit
+    for study_area in predefined_study_areas:
+        db.session.add(study_area)
+    db.session.commit()
 
 
 ############################################################
@@ -79,31 +87,21 @@ class University(db.Model):
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100))
 
-    students = db.relationship('Student', secondary='student_university', back_populates='universities')
-    study_areas = db.relationship('StudyArea', secondary='university_study_area', back_populates='universities')
+    def __init__(self, name, location, selected_study_areas=None):
+        self.name = name
+        self.location = location
+        self.study_areas = selected_study_areas if selected_study_areas is not None else []
 
+    def add_study_area(self, study_area):
+        # Add a study area to this university's selected study areas
+        self.study_areas.append(study_area)
 
+    def remove_study_area(self, study_area):
+        # Remove a study area from this university's selected study areas
+        self.study_areas.remove(study_area)
 
-############################################################
-#         student - university relationship                 =================================
-############################################################
-
-student_university = db.Table(
-    'student_university',
-    db.Column('student_id', db.Integer, db.ForeignKey('student.id'), primary_key=True),
-    db.Column('university_id', db.Integer, db.ForeignKey('university.id'), primary_key=True)
-)
-
-############################################################
-#         study area - university relationship              =================================
-############################################################
-
-university_study_area = db.Table(
-    'university_study_area',
-    db.Column('university_id', db.Integer, db.ForeignKey('university.id'), primary_key=True),
-    db.Column('study_area_id', db.Integer, db.ForeignKey('study_area.id'), primary_key=True)
-)
-
+    def __repr__(self):
+        return f'<University {self.name}>'
 
 ############################################################
 #                   Accommodation Model
@@ -122,3 +120,48 @@ class Accommodation(db.Model):
     type = db.Column(db.String(50))  # Example: Hotel, Dormitory, etc.
     price = db.Column(db.Integer)
     location = db.Column(db.String(100))
+
+
+
+# =============== RELATIONSHIP TABLES =================
+
+############################################################
+#         study area - university relationship              =================================
+############################################################
+
+university_study_area = db.Table(
+    'university_study_area',
+    db.Column('university_id', db.Integer, db.ForeignKey('university.id'), primary_key=True),
+    db.Column('study_area_id', db.Integer, db.ForeignKey('study_area.id'), primary_key=True)
+)
+
+
+############################################################
+#         study area - student relationship                 =================================
+############################################################
+student_study_area = db.Table(
+    'student_study_area',
+    db.Column('student_id', db.Integer, db.ForeignKey('student.id'), primary_key=True),
+    db.Column('study_area_id', db.Integer, db.ForeignKey('study_area.id'), primary_key=True)
+)
+
+
+############################################################
+#         student - university relationship                 =================================
+############################################################
+student_university = db.Table(
+    'student_university',
+    db.Column('student_id', db.Integer, db.ForeignKey('student.id'), primary_key=True),
+    db.Column('university_id', db.Integer, db.ForeignKey('university.id'), primary_key=True)
+)
+
+
+
+University.students = db.relationship('Student', secondary=student_university, back_populates='universities')
+Student.universities = db.relationship('University', secondary=student_university, back_populates='students')
+
+StudyArea.universities = db.relationship('University', secondary=university_study_area, back_populates='study_areas')
+University.study_areas = db.relationship('StudyArea', secondary=university_study_area, back_populates='universities')
+
+Student.study_areas = db.relationship('StudyArea', secondary=student_study_area, back_populates='students')
+StudyArea.students = db.relationship('Student', secondary=student_study_area, back_populates='study_areas')
