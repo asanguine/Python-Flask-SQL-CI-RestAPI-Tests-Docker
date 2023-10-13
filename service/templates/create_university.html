@@ -44,8 +44,21 @@
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="name">Location:</label>
+                <label for="location">Location:</label>
                 <input type="text" class="form-control" id="location" name="location" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Create University</
+            
+            <div class="form-group">
+                <label for="study_areas">Select Study Areas:</label>
+                {{ study_areas | length }} study areas found
+                {% for study_area in study_areas %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="study_areas" value="{{ study_area.id }}">
+                    <label class="form-check-label" for="study_areas">{{ study_area.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            
+            
+            <button type="submit" class="btn btn-primary">Create University</button>
+        </form>

@@ -67,17 +67,8 @@ class StudyArea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
 
-def create_predefined_study_areas():
-    predefined_study_areas = [
-        StudyArea(name='Computer Science'),
-        StudyArea(name='Mechanical Engineering'),
-        StudyArea(name='Electrical Engineering'),
-    ]
-    # Add the predefined study areas to the database session and commit
-    for study_area in predefined_study_areas:
-        db.session.add(study_area)
-    db.session.commit()
-
+    def __init__(self, name):
+        self.name = name
 
 ############################################################
 #                     University Model
@@ -87,18 +78,10 @@ class University(db.Model):
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100))
 
-    def __init__(self, name, location, selected_study_areas=None):
-        self.name = name
-        self.location = location
-        self.study_areas = selected_study_areas if selected_study_areas is not None else []
-
-    def add_study_area(self, study_area):
-        # Add a study area to this university's selected study areas
-        self.study_areas.append(study_area)
-
-    def remove_study_area(self, study_area):
-        # Remove a study area from this university's selected study areas
-        self.study_areas.remove(study_area)
+    # def __init__(self, name, location):
+    #     self.name = name
+    #     self.location = location
+    #     self.study_areas = []
 
     def __repr__(self):
         return f'<University {self.name}>'

@@ -1,7 +1,7 @@
 
 from flask import Flask, request, render_template, redirect, url_for
 from service import app, db
-from service.models.student import University
+from service.models.student import University, StudyArea
 
 @app.route('/universities/create', methods=['GET', 'POST'])
 def create_university():
@@ -10,13 +10,17 @@ def create_university():
         location = request.form.get('location')
         id = University.query.count() + 1
 
-        university = University(name=name, location=location)
+        selected_study_areas = request.form.getlist('study_areas')  # Get selected study areas from the form
+        study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
+
+        university = University(name=name, location=location, study_areas=study_areas)
         db.session.add(university)
         db.session.commit()
 
         return redirect(url_for('list_universities'))
     
-    return render_template('create_university.html')
+    study_areas = StudyArea.query.all()
+    return render_template('create_university.html', study_areas=study_areas)
 
 
 @app.route('/universities')
