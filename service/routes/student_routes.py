@@ -1,25 +1,32 @@
 
 from flask import Flask, request, render_template, redirect, url_for
 from service import app, db
-from service.models.student import Student
+from service.models.student import Student, StudyArea, Language
 
 @app.route('/students/create', methods=['GET', 'POST'])
 def create_student():
     if request.method == 'POST':
         name = request.form.get('name')
-        major = request.form.get('major')
         budget = request.form.get('budget')
         email = request.form.get('email')
         phone_number = request.form.get('phone_number')
         id = Student.query.count() + 1
 
-        student = Student(name=name, major=major, budget=budget)
+        selected_study_areas = request.form.getlist('study_areas')  # Get selected study areas from the form
+        study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
+
+        selected_languages = request.form.getlist('languages')
+        languages = Language.query.filter(Language.id.in_(selected_languages)).all()
+
+        student = Student(name=name, email=email, phone_number=phone_number, budget=budget, study_areas=study_areas, languages=languages)
         db.session.add(student)
         db.session.commit()
 
         return redirect(url_for('list_students'))
     
-    return render_template('create_student.html')
+    languages = Language.query.all()
+    study_areas = StudyArea.query.all()    
+    return render_template('create_student.html', study_areas=study_areas, languages=languages)
 
 
 @app.route('/students')
@@ -31,16 +38,26 @@ def list_students():
 @app.route('/students/<int:id>/edit', methods=['GET', 'POST'])
 def edit_student(id):
     student = Student.query.get(id)
+    all_study_areas = StudyArea.query.all()
+    all_languages = Language.query.all()
 
     if request.method == 'POST':
         student.name = request.form.get('name')
         student.major = request.form.get('major')
         student.budget = request.form.get('budget')
 
+        selected_study_areas = request.form.getlist('study_areas')
+        study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
+        student.study_areas = study_areas
+
+        selected_languages = request.form.getlist('languages')
+        languages = Language.query.filter(Language.id.in_(selected_languages)).all()
+        student.languages = languages
+
         db.session.commit()
         return redirect(url_for('list_students'))
 
-    return render_template('edit_student.html', student=student)
+    return render_template('edit_student.html', student=student, all_study_areas=all_study_areas, all_languages=all_languages)
 
 
 @app.route('/students/<int:id>/delete', methods=['POST'])

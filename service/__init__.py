@@ -12,22 +12,21 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-from service.models.student import Student, University, Accommodation, StudyArea
-
+from service.models.student import Student, University, Accommodation, StudyArea, Language
 from service.routes import *
+
 
 
 # Ensure the database tables are created
 with app.app_context():
+    if not Language.query.filter(Language.name.in_(['English', 'German'])).count():
+        Language.create_hardcoded_languages()
     db.create_all()
-
-
 
 
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 
 if __name__ == '__main__':

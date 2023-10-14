@@ -45,8 +45,13 @@
             </div>
 
             <div class="form-group">
-                <label for="major">Major:</label>
-                <input type="text" class="form-control" id="major" name="major" value="{{ student.major }}" required>
+                <label for="name">Email:</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ student.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Phone Number:</label>
+                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ student.phone_number }}" required>
             </div>
 
             <div class="form-group">
@@ -54,6 +59,30 @@
                 <input type="text" class="form-control" id="budget" name="budget" value="{{ student.budget }}" required>
             </div>
 
+            <div class="form-group">
+                <label for="study_areas">Select Study Areas:</label>
+                {{ all_study_areas | length }} study areas found
+                {% for study_area in all_study_areas %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="study_areas" value="{{ study_area.id }}"
+                            {% if study_area in student.study_areas %} checked {% endif %}>
+                        <label class="form-check-label" for="study_areas">{{ study_area.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="languages">Select Languages:</label>
+                {{ all_languages | length }} languages found
+                {% for language in all_languages %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="languages" value="{{ language.id }}"
+                            {% if language in student.languages %} checked {% endif %}>
+                        <label class="form-check-label" for="languages">{{ language.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            
             <button type="submit" class="btn btn-primary">Save Changes</button>
         </form>
 
