@@ -1,7 +1,8 @@
 
 from flask import Flask, request, render_template, redirect, url_for
 from service import app, db
-from service.models.student import Student, StudyArea, Language
+from service.models.student import Student, StudyArea, Language, University
+from service.matching.university_matching import match_students_to_universities
 
 @app.route('/students/create', methods=['GET', 'POST'])
 def create_student():
@@ -20,8 +21,9 @@ def create_student():
 
         student = Student(name=name, email=email, phone_number=phone_number, budget=budget, study_areas=study_areas, languages=languages)
         db.session.add(student)
-        db.session.commit()
 
+        match_students_to_universities()
+        db.session.commit()
         return redirect(url_for('list_students'))
     
     languages = Language.query.all()
@@ -45,6 +47,8 @@ def edit_student(id):
         student.name = request.form.get('name')
         student.major = request.form.get('major')
         student.budget = request.form.get('budget')
+        student.email = request.form.get('email')
+        student.phone_number = request.form.get('phone_number')
 
         selected_study_areas = request.form.getlist('study_areas')
         study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
@@ -54,9 +58,10 @@ def edit_student(id):
         languages = Language.query.filter(Language.id.in_(selected_languages)).all()
         student.languages = languages
 
+        match_students_to_universities()
         db.session.commit()
         return redirect(url_for('list_students'))
-
+    
     return render_template('edit_student.html', student=student, all_study_areas=all_study_areas, all_languages=all_languages)
 
 

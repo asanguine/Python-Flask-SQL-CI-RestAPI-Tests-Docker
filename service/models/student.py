@@ -171,8 +171,8 @@ student_university = db.Table(
 
 
 
-University.students = db.relationship('Student', secondary=student_university, back_populates='universities')
-Student.universities = db.relationship('University', secondary=student_university, back_populates='students')
+University.students = db.relationship('Student', secondary=student_university, back_populates='applicable_universities')
+Student.applicable_universities = db.relationship('University', secondary=student_university, back_populates='students')
 
 StudyArea.universities = db.relationship('University', secondary=university_study_area, back_populates='study_areas')
 University.study_areas = db.relationship('StudyArea', secondary=university_study_area, back_populates='universities')
