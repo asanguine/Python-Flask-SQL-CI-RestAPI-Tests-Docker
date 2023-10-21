@@ -20,8 +20,6 @@ class Student(db.Model):
     phone_number = db.Column(db.Integer)
     budget = db.Column(db.Integer)
     status = db.Column(db.String(100))
-    assigned_university = db.Column(db.String(100))
-
 
     def __repr__(self):
         return '<Student %r>' % self.name
@@ -163,16 +161,24 @@ student_study_area = db.Table(
 ############################################################
 #         student - university relationship                 =================================
 ############################################################
-student_university = db.Table(
-    'student_university',
-    db.Column('student_id', db.Integer, db.ForeignKey('student.id'), primary_key=True),
-    db.Column('university_id', db.Integer, db.ForeignKey('university.id'), primary_key=True)
+student_applicable_universities = db.Table(
+    'student_applicable_universities',
+    db.Column('student_id', db.Integer, db.ForeignKey('student.id')),
+    db.Column('university_id', db.Integer, db.ForeignKey('university.id'))
+)
+
+student_assigned_university = db.Table(
+    'student_assigned_university',
+    db.Column('student_id', db.Integer, db.ForeignKey('student.id')),
+    db.Column('university_id', db.Integer, db.ForeignKey('university.id'))
 )
 
 
+University.students = db.relationship('Student', secondary=student_applicable_universities, back_populates='applicable_universities')
+Student.applicable_universities = db.relationship('University', secondary=student_applicable_universities, back_populates='students')
 
-University.students = db.relationship('Student', secondary=student_university, back_populates='applicable_universities')
-Student.applicable_universities = db.relationship('University', secondary=student_university, back_populates='students')
+Student.assigned_university = db.relationship('University', secondary=student_assigned_university, back_populates='assigned_students')
+University.assigned_students = db.relationship('Student', secondary=student_assigned_university, back_populates='assigned_university')
 
 StudyArea.universities = db.relationship('University', secondary=university_study_area, back_populates='study_areas')
 University.study_areas = db.relationship('StudyArea', secondary=university_study_area, back_populates='universities')

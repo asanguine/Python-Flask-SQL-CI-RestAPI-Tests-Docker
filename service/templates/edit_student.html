@@ -82,6 +82,18 @@
                     </div>
                 {% endfor %}
             </div>
+
+            <div class="form-group">
+                <label for="assigned_university_id">Assigned University:</label>
+                <select class="form-control" name="assigned_university_id">
+                    <option value="">Choose an assigned university</option>
+                    {% for university in student.applicable_universities %}
+                        <option value="{{ university.id }}" {% if student.assigned_university.id == university.id %}selected{% endif %}>
+                            {{ university.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
             
             <button type="submit" class="btn btn-primary">Save Changes</button>
         </form>

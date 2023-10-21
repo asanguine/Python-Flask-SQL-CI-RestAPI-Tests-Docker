@@ -42,6 +42,7 @@ def edit_student(id):
     student = Student.query.get(id)
     all_study_areas = StudyArea.query.all()
     all_languages = Language.query.all()
+    all_universities = University.query.all()
 
     if request.method == 'POST':
         student.name = request.form.get('name')
@@ -58,11 +59,18 @@ def edit_student(id):
         languages = Language.query.filter(Language.id.in_(selected_languages)).all()
         student.languages = languages
 
+
+
+        uni_to_assign = request.form.get('assigned_university_id')
+        # student.assigned_university_id = assigned_university_id  # Assign it to the student
+
+
+
         match_students_to_universities()
         db.session.commit()
         return redirect(url_for('list_students'))
     
-    return render_template('edit_student.html', student=student, all_study_areas=all_study_areas, all_languages=all_languages)
+    return render_template('edit_student.html', student=student, all_study_areas=all_study_areas, all_languages=all_languages, all_universities=all_universities)
 
 
 @app.route('/students/<int:id>/delete', methods=['POST'])
