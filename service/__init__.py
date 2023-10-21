@@ -16,7 +16,6 @@ from service.models.student import Student, University, Accommodation, StudyArea
 from service.routes import *
 
 
-
 # Ensure the database tables are created
 with app.app_context():
     if not Language.query.filter(Language.name.in_(['English', 'German'])).count():

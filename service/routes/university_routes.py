@@ -10,7 +10,7 @@ def create_university():
         location = request.form.get('location')
         id = University.query.count() + 1
 
-        selected_study_areas = request.form.getlist('study_areas')  # Get selected study areas from the form
+        selected_study_areas = request.form.getlist('study_areas')
         study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
 
         university = University(name=name, location=location, study_areas=study_areas)
@@ -26,7 +26,13 @@ def create_university():
 @app.route('/universities')
 def list_universities():
     universities = University.query.all()
-    return render_template('list_universities.html', universities=universities)
+
+    universities_with_students = []
+    for university in universities:
+        students = university.assigned_students
+        universities_with_students.append((university, students))
+
+    return render_template('list_universities.html', universities=universities, universities_with_students=universities_with_students)
 
 
 @app.route('/universities/<int:id>/edit', methods=['GET', 'POST'])

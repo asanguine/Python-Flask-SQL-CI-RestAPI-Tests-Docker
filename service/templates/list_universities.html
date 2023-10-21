@@ -50,6 +50,7 @@
                     <th>Name</th>
                     <th>Location</th>
                     <th>Study Areas</th>
+                    <th>Students</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -65,8 +66,11 @@
                             {% if not loop.last %}, {% endif %} <!-- Add a comma if it's not the last study area -->
                         {% endfor %}
                     </td>
-
-                    <td>{{ (university.assigned_students.name) }}</td>
+                    <td>
+                        {% for student in university.assigned_students %}
+                            {{ student.name }}
+                        {% endfor %}
+                    </td>
 
                     <td class="university-actions">
                         <a class="btn btn-sm btn-primary" href="{{ url_for('edit_university', id=university.id) }}">Edit</a>

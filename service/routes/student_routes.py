@@ -61,7 +61,16 @@ def edit_student(id):
 
         assigned_university_id = request.form.get('assigned_university_id')
         assigned_university = University.query.get(assigned_university_id)
+
+        # Clear the old assigned university relationship
+        if student.assigned_university:
+            student.assigned_university.assigned_students.remove(student)
+
+        # Update the assigned university relationship
         student.assigned_university = assigned_university
+
+        # Update the assigned_students relationship on the university side
+        assigned_university.assigned_students.append(student)
 
         match_students_to_universities()
         db.session.commit()
