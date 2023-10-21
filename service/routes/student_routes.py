@@ -59,12 +59,9 @@ def edit_student(id):
         languages = Language.query.filter(Language.id.in_(selected_languages)).all()
         student.languages = languages
 
-
-
-        uni_to_assign = request.form.get('assigned_university_id')
-        # student.assigned_university_id = assigned_university_id  # Assign it to the student
-
-
+        assigned_university_id = request.form.get('assigned_university_id')
+        assigned_university = University.query.get(assigned_university_id)
+        student.assigned_university = assigned_university
 
         match_students_to_universities()
         db.session.commit()
