@@ -79,7 +79,6 @@ class Language(db.Model):
         english = Language(name='English')
         german = Language(name='German')
 
-        # Add the languages to the database session and commit
         db.session.add(english)
         db.session.add(german)
         db.session.commit()

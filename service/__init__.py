@@ -18,9 +18,10 @@ from service.routes import *
 
 # Ensure the database tables are created
 with app.app_context():
+    db.create_all()
     if not Language.query.filter(Language.name.in_(['English', 'German'])).count():
         Language.create_hardcoded_languages()
-    db.create_all()
+    
 
 
 @app.route('/')
