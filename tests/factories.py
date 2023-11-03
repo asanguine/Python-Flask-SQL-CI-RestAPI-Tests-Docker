@@ -15,5 +15,5 @@ class StudentFactory(factory.Factory):
     name = factory.Faker("name")
     email = factory.Faker("email")
     phone_number = factory.Faker("phone_number")
-    budget = factory.LazyAttribute(random.randrange(1000, 10000))
+    budget = factory.fuzzy.FuzzyInteger(1000, 10000)
 
