@@ -17,7 +17,8 @@ def create_university():
         db.session.add(university)
         db.session.commit()
 
-        return redirect(url_for('list_universities'))
+        #return redirect(url_for('list_universities'))
+        return redirect('http://localhost/list_universities')
     
     study_areas = StudyArea.query.all()
     return render_template('create_university.html', study_areas=study_areas)
