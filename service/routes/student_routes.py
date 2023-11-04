@@ -24,7 +24,8 @@ def create_student():
 
         match_students_to_universities()
         db.session.commit()
-        return redirect(url_for('list_students'))
+        #return redirect(url_for('list_students'))
+        return redirect('http://localhost/list_students')
     
     languages = Language.query.all()
     study_areas = StudyArea.query.all()    
@@ -74,7 +75,8 @@ def edit_student(id):
 
         match_students_to_universities()
         db.session.commit()
-        return redirect(url_for('list_students'))
+        #return redirect(url_for('list_students'))
+        return redirect('http://localhost/list_students')
     
     return render_template('edit_student.html', student=student, all_study_areas=all_study_areas, all_languages=all_languages, all_universities=all_universities)
 
@@ -86,4 +88,5 @@ def delete_student(id):
     db.session.delete(student)
     db.session.commit()
 
-    return redirect(url_for('list_students'))
+    #return redirect(url_for('list_students'))
+    return redirect('http://localhost/list_students')

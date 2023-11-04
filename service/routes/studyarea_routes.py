@@ -13,8 +13,8 @@ def create_study_area():
         db.session.add(study_area)
         db.session.commit()
 
-        return redirect(url_for('list_study_areas'))
-    
+        return redirect('http://localhost/study_areas')
+
     return render_template('create_study_area.html')
 
 
