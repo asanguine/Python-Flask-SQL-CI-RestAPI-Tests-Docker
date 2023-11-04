@@ -25,14 +25,3 @@ def match_students_to_universities():
                 # Ranking Universities
                 if score > 0 and student not in university.students:
                     student.applicable_universities.append((university))
-                    
-        #print(f"Applicable Universities: {[app_uni.name for app_uni in student.applicable_universities]}")
-        # Assign Universities to Students
-        #student.applicable_universities.sort(key=lambda x: x[1], reverse=True)
-
-
-
-# # Step 6: Record Assigned University (Example: Assign the top match)
-# for student in students:
-#     if student.applicable_universities:
-#         student.assigned_university = student.applicable_universities[0][0].name
