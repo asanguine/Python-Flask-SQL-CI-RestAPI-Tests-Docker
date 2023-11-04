@@ -4,7 +4,7 @@ from flask_testing import TestCase
 from service import app, db
 from service.models.student import StudyArea
 
-class TestCreateStudyAreaRoute(TestCase):
+class TestStudyAreaRoutes(TestCase):
     def create_app(self):
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         app.config['TESTING'] = True

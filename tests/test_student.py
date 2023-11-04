@@ -49,8 +49,8 @@ class TestStudentModel(unittest.TestCase):
         student = StudentFactory.build()
         
         data = {
-            'name': 'John Doe',
-            'email': 'john@example.com',
+            'name': 'Birkan',
+            'email': 'birkan@example.com',
             'phone_number': '123-456-7890',
             'budget': 5000,
             'status': 'Active'
@@ -58,8 +58,8 @@ class TestStudentModel(unittest.TestCase):
         
         student.from_dict(data)
         
-        self.assertEqual(student.name, 'John Doe')
-        self.assertEqual(student.email, 'john@example.com')
+        self.assertEqual(student.name, 'Birkan')
+        self.assertEqual(student.email, 'birkan@example.com')
         self.assertEqual(student.phone_number, '123-456-7890')
         self.assertEqual(student.budget, 5000)
         self.assertEqual(student.status, 'Active')
@@ -102,7 +102,7 @@ class TestStudentModel(unittest.TestCase):
 
 
     def test_student_update_empty_id(self):
-        student = Student(name="John Doe")
+        student = Student(name="Birkan")
         with self.assertRaises(DataValidationError):
             student.update()
 
