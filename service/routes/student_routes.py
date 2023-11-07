@@ -13,13 +13,18 @@ def create_student():
         phone_number = request.form.get('phone_number')
         id = Student.query.count() + 1
 
-        selected_study_areas = request.form.getlist('study_areas')  # Get selected study areas from the form
+        selected_study_areas = request.form.getlist('study_areas')
         study_areas = StudyArea.query.filter(StudyArea.id.in_(selected_study_areas)).all()
 
         selected_languages = request.form.getlist('languages')
         languages = Language.query.filter(Language.id.in_(selected_languages)).all()
 
-        student = Student(name=name, email=email, phone_number=phone_number, budget=budget, study_areas=study_areas, languages=languages)
+        student = Student(name=name,
+                          email=email,
+                          phone_number=phone_number,
+                          budget=budget,
+                          study_areas=study_areas,
+                          languages=languages)
         db.session.add(student)
 
         match_students_to_universities()
