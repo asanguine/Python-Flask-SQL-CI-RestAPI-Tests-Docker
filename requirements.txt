@@ -5,6 +5,7 @@ requests
 flask-migrate
 Flask-WTF
 
+flake8
 # pymysql
 # connector
 # connector-python
