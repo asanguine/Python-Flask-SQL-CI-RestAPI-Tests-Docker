@@ -16,3 +16,4 @@ pinocchio
 coverage
 factory-boy
 pylint
+Flask-Testing
