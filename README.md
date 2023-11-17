@@ -1,2 +1,4 @@
 # Student_Counseling_Service
-![alt text]([http://url/to/img.png](https://i.imgur.com/e5qQL51.png)https://i.imgur.com/e5qQL51.png)
+
+
+![firefox_vhroMv8Xdk](https://github.com/asanguine/Student_Counseling_Service/assets/54071079/09afcd6e-e9a0-4e62-8e31-371b4e0c8160)
